@@ -349,9 +349,15 @@ void HypotheticalMachineSimulator::execute()
     throw SimulatorException("Error: invalid instruction in IR");
   }
 
-  incrementPC();
   irOpcode = static_cast<OpcodeMnemonic>(ir / 1000);
   irAddress = ir % 1000;
+
+  if (irOpcode == NOOP_HALT)
+  {
+    return;
+  }
+
+  incrementPC();
 
   switch (irOpcode)
   {
@@ -369,8 +375,6 @@ void HypotheticalMachineSimulator::execute()
     break;
   case JMP:
     executeJmp();
-    break;
-  case NOOP_HALT:
     break;
   default:
     throw SimulatorException("Error: invalid opcode in IR");
@@ -447,57 +451,46 @@ int HypotheticalMachineSimulator::runSimulation(int maxCycles, bool verbose)
 {
   int cycle = 0;
 
-  // Finally for step 7 I have given you an implementation of this
-  // function.  It uses your fetch() and execute() functions (which in)
-  // turn use the others you implemented) to run a full simulation of
-  // our hypothetical machine.  Uncomment the while loop and then all of
-  // your unit tests should be passing if the previous functions were fully
-  // implemented correctly and as asked for.  If unit tests are not passing
-  // after uncommenting the code below, you shold go back to the first failing
-  // unit test and figure out and fix that issue, and proceed fixing issues 1
-  // at a time.
-  /*
-     bool done = false;
+  bool done = false;
 
-     while (!done)
-     {
-     // perform fetch stage
-     fetch();
-     irOpcode = NOOP_HALT;
-     irAddress = 0;
-     if (verbose)
-     {
+  while (!done)
+  {
+    // perform fetch stage
+    fetch();
+    irOpcode = NOOP_HALT;
+    irAddress = 0;
+    if (verbose)
+    {
       cout << "==================== cycle: " << cycle + 1 << endl;
       cout << "-------------------- fetch" << endl;
       cout << *this;
-     }
+    }
 
-     // perform execute stage
-     execute();
-     if (verbose)
-     {
+    // perform execute stage
+    execute();
+    if (verbose)
+    {
       cout << "-------------------- execute" << endl;
       cout << *this;
-     }
+    }
 
-     // increment cycle counter for next cycle
-     cycle++;
+    // increment cycle counter for next cycle
+    cycle++;
 
-     // we are done if we exceed the maximum number of
-     // cycles to simulate
-     if (cycle >= maxCycles)
-     {
+    // we are done if we exceed the maximum number of
+    // cycles to simulate
+    if (cycle >= maxCycles)
+    {
       done = true;
-     }
+    }
 
-     // or we are done when we hit a NOOP_HALT
-     // instruction
-     if (irOpcode == NOOP_HALT)
-     {
+    // or we are done when we hit a NOOP_HALT
+    // instruction
+    if (irOpcode == NOOP_HALT)
+    {
       done = true;
-     }
-     }
-   */
+    }
+  }
 
   return cycle;
 }
