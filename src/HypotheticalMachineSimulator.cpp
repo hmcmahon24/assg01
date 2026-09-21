@@ -384,9 +384,7 @@ void HypotheticalMachineSimulator::execute()
  * @pre current irOpcode is a LOAD when called.
  */
 void HypotheticalMachineSimulator::executeLoad()
-{
-  ac = peekAddress(irAddress);
-}
+{ ac = peekAddress(irAddress); }
 
 /**
  * @brief execute store
@@ -395,9 +393,7 @@ void HypotheticalMachineSimulator::executeLoad()
  * @pre current irOpcode is a STORE when called
  */
 void HypotheticalMachineSimulator::executeStore()
-{
-  pokeAddress(irAddress, ac);
-}
+{ pokeAddress(irAddress, ac); }
 
 /**
  * @brief execute add
@@ -406,9 +402,7 @@ void HypotheticalMachineSimulator::executeStore()
  * @[re current irOpcode is an ADD when called
  */
 void HypotheticalMachineSimulator::executeAdd()
-{
-  ac += peekAddress(irAddress);
-}
+{ ac += peekAddress(irAddress); }
 
 /**
  * @brief execute sub
@@ -417,9 +411,7 @@ void HypotheticalMachineSimulator::executeAdd()
  * @pre current irOpcode is a SUB when called
  */
 void HypotheticalMachineSimulator::executeSub()
-{
-  ac -= peekAddress(irAddress);
-}
+{ ac -= peekAddress(irAddress); }
 
 /**
  * @brief execute jmp
@@ -428,9 +420,7 @@ void HypotheticalMachineSimulator::executeSub()
  * @pre current irOpcode is a JMP when called
  */
 void HypotheticalMachineSimulator::executeJmp()
-{
-  pc = irAddress;
-}
+{ pc = irAddress; }
 
 /**
  * @brief run simulation
