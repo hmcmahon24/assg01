@@ -95,6 +95,7 @@ public:
   int translateAddress(int virtualAddress) const;
   void pokeAddress(int virtualAddress, int value);
   int peekAddress(int virtualAddress) const;
+  void fetch();
   int getPC() const;
   void incrementPC();
   int getAC() const;
