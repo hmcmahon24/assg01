@@ -84,9 +84,7 @@ HypotheticalMachineSimulator::HypotheticalMachineSimulator()
  * released.
  */
 HypotheticalMachineSimulator::~HypotheticalMachineSimulator()
-{
-  this->reset();
-}
+{ this->reset(); }
 
 /**
  * @brief reset machine
@@ -218,7 +216,46 @@ void HypotheticalMachineSimulator::loadProgram(string programFile)
  *   address.  Thus we can only address memory from 000 - 999
  *   given the limits of the expected opcode format.
  */
-// your implementation of initializeMemory() should go here
+void HypotheticalMachineSimulator::initializeMemory(int baseAddress, int boundsAddress)
+{
+  // Validate the memory address range before allocating anything.
+  // This simulator uses a 3-digit address field, so valid addresses are
+  // 000..999 only.
+  if (baseAddress < 0 || boundsAddress < 0)
+  {
+    throw SimulatorException("Error: memory base or bounds address is negative");
+  }
+
+  if (baseAddress > 999 || boundsAddress > 999)
+  {
+    throw SimulatorException("Error: memory base or bounds address exceeds valid range");
+  }
+
+  if (baseAddress > boundsAddress)
+  {
+    throw SimulatorException("Error: memory base address exceeds bounds address");
+  }
+
+  // Free any previously allocated memory before creating a new block.
+  if (memory)
+  {
+    delete[] memory;
+  }
+
+  memoryBaseAddress = baseAddress;
+  memoryBoundsAddress = boundsAddress;
+  memorySize = memoryBoundsAddress - memoryBaseAddress + 1;
+
+  memory = new int[memorySize];
+
+  // The simulator expects unspecified memory to be initialized to 0.
+  for (int i = 0; i < memorySize; ++i)
+  {
+    memory[i] = 0;
+  }
+
+  memoryAddressList.clear();
+}
 
 /**
  * @brief memory address translation
@@ -417,9 +454,7 @@ int HypotheticalMachineSimulator::runSimulation(int maxCycles, bool verbose)
  * @returns int Returns the current virtual memory base address.
  */
 int HypotheticalMachineSimulator::getMemoryBaseAddress() const
-{
-  return memoryBaseAddress;
-}
+{ return memoryBaseAddress; }
 
 /**
  * @brief memory bounds address accessor
@@ -427,9 +462,7 @@ int HypotheticalMachineSimulator::getMemoryBaseAddress() const
  * @returns int Returns the current virtual upper bounds address.
  */
 int HypotheticalMachineSimulator::getMemoryBoundsAddress() const
-{
-  return memoryBoundsAddress;
-}
+{ return memoryBoundsAddress; }
 
 /**
  * @brief memory size accessor
@@ -438,9 +471,7 @@ int HypotheticalMachineSimulator::getMemoryBoundsAddress() const
  *   simulation.
  */
 int HypotheticalMachineSimulator::getMemorySize() const
-{
-  return memorySize;
-}
+{ return memorySize; }
 
 /**
  * @brief program counter accessor
@@ -449,9 +480,7 @@ int HypotheticalMachineSimulator::getMemorySize() const
  *   register of the simulation.
  */
 int HypotheticalMachineSimulator::getPC() const
-{
-  return pc;
-}
+{ return pc; }
 
 /**
  * @brief program counter increment
@@ -461,9 +490,7 @@ int HypotheticalMachineSimulator::getPC() const
  * addition to pc increment at end of execute stage.
  */
 void HypotheticalMachineSimulator::incrementPC()
-{
-  pc++;
-}
+{ pc++; }
 
 /**
  * @brief accumulator accessor
@@ -472,9 +499,7 @@ void HypotheticalMachineSimulator::incrementPC()
  *   AC (accumulator) register.
  */
 int HypotheticalMachineSimulator::getAC() const
-{
-  return ac;
-}
+{ return ac; }
 
 /**
  * @brief instruction register accessor
@@ -483,9 +508,7 @@ int HypotheticalMachineSimulator::getAC() const
  *   IR (instruction regiser).
  */
 int HypotheticalMachineSimulator::getIR() const
-{
-  return ir;
-}
+{ return ir; }
 
 /**
  * @brief instruction register opcode accessor
@@ -495,9 +518,7 @@ int HypotheticalMachineSimulator::getIR() const
  *   register.
  */
 int HypotheticalMachineSimulator::getIROpcode() const
-{
-  return irOpcode;
-}
+{ return irOpcode; }
 
 /**
  * @brief instruction register address accessor
@@ -506,9 +527,7 @@ int HypotheticalMachineSimulator::getIROpcode() const
  *   loaded instruction/opcode in the instruction register.
  */
 int HypotheticalMachineSimulator::getIRAddress() const
-{
-  return irAddress;
-}
+{ return irAddress; }
 
 /**
  *@brief overload output stream operator for simulation
