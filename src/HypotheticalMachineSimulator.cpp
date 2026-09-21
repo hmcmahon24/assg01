@@ -272,7 +272,15 @@ void HypotheticalMachineSimulator::initializeMemory(int baseAddress, int boundsA
  * @returns int Returns the calculated real address translation of the simulated
  *   address.
  */
-// your implementation of translateAddress() should go here
+int HypotheticalMachineSimulator::translateAddress(int virtualAddress) const
+{
+  if (virtualAddress < memoryBaseAddress || virtualAddress > memoryBoundsAddress)
+  {
+    throw SimulatorException("Error: illegal memory address access");
+  }
+
+  return virtualAddress - memoryBaseAddress;
+}
 
 /**
  * @brief poke memory

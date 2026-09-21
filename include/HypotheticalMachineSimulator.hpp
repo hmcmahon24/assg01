@@ -92,6 +92,7 @@ public:
   int getMemoryBaseAddress() const;
   int getMemoryBoundsAddress() const;
   int getMemorySize() const;
+  int translateAddress(int virtualAddress) const;
   int getPC() const;
   void incrementPC();
   int getAC() const;
